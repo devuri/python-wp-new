@@ -1,0 +1,26 @@
+#!/usr/bin/env python
+
+import requests
+import subprocess
+
+#vars
+WP_URL = 'https://wordpress.org/latest.zip'
+
+req_error = 'sorry we cant find the file'
+downloading = 'Everything Looks good Lets Download WordPress'
+
+# make sure we can reach the url
+wpreq = requests.get(WP_URL)
+if wpreq.status_code != 200:
+    print(str(req_error))
+elif wpreq.status_code == 200:
+    print(downloading)
+    subprocess.call(['wget', WP_URL])
+    subprocess.call(['unzip', 'latest.zip'])
+    subprocess.call(['rm','latest.zip'])
+    subprocess.call('mv wordpress/*.* .', shell=True)
+    subprocess.call('mv wordpress/* .', shell=True)
+    subprocess.call(['ls', '-l'])
+    subprocess.call(['rm', '-r', 'wordpress'])
+    print("Awesome WordPress is ready")
+    #subprocess.call(['rm','wp-new'])
